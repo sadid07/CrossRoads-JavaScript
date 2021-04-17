@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
+    <title>Crossroads</title>
+    <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" charset="UTF-8"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+
+  </head>
+  <body>
+<style>
+
+</style>
+
+
+
+
+
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div myFunction() id="root"></div>
+
+<script>
+
+$(document).ready(function () {
+/*==================== SHOW MENU ====================*/
+const showMenu = (toggleId, navId) =>{
+    const toggle = document.getElementById(toggleId),
+    nav = document.getElementById(navId)
+    
+    // Validate that variables exist
+    if(toggle && nav){
+        toggle.addEventListener('click', ()=>{
+            // We add the show-menu class to the div tag with the nav__menu class
+            nav.classList.toggle('show-menu')
+        })
+    }
+}
+showMenu('nav-toggle','nav-menu')
+
+/*==================== REMOVE MENU MOBILE ====================*/
+const navLink = document.querySelectorAll('.nav__link')
+
+function linkAction(){
+    const navMenu = document.getElementById('nav-menu')
+    // When we click on each nav__link, we remove the show-menu class
+    navMenu.classList.remove('show-menu')
+}
+navLink.forEach(n => n.addEventListener('click', linkAction))
+
+/*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
+const sections = document.querySelectorAll('section[id]')
+
+function scrollActive(){
+    const scrollY = window.pageYOffset
+
+    sections.forEach(current =>{
+        const sectionHeight = current.offsetHeight
+        const sectionTop = current.offsetTop - 50;
+        sectionId = current.getAttribute('id')
+
+        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
+        }else{
+            document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
+        }
+    })
+}
+window.addEventListener('scroll', scrollActive)
+
+/*==================== CHANGE BACKGROUND HEADER ====================*/ 
+function scrollHeader(){
+    const nav = document.getElementById('header')
+    // When the scroll is greater than 200 viewport height, add the scroll-header class to the header tag
+    if(this.scrollY >= 200) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
+}
+window.addEventListener('scroll', scrollHeader)
+
+/*==================== SHOW SCROLL TOP ====================*/ 
+function scrollTop(){
+    const scrollTop = document.getElementById('scroll-top');
+    // When the scroll is higher than 560 viewport height, add the show-scroll class to the a tag with the scroll-top class
+    if(this.scrollY >= 560) scrollTop.classList.add('show-scroll'); else scrollTop.classList.remove('show-scroll')
+}
+window.addEventListener('scroll', scrollTop)
+
+/*==================== DARK LIGHT THEME ====================*/ 
+const themeButton = document.getElementById('theme-button')
+const darkTheme = 'dark-theme'
+const iconTheme = 'bx-sun'
+
+// Previously selected topic (if user selected)
+const selectedTheme = localStorage.getItem('selected-theme')
+const selectedIcon = localStorage.getItem('selected-icon')
+
+// We obtain the current theme that the interface has by validating the dark-theme class
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
+const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'bx-moon' : 'bx-sun'
+
+// We validate if the user previously chose a topic
+if (selectedTheme) {
+  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+  themeButton.classList[selectedIcon === 'bx-moon' ? 'add' : 'remove'](iconTheme)
+}
+
+// Activate / deactivate the theme manually with the button
+themeButton.addEventListener('click', () => {
+    // Add or remove the dark / icon theme
+    document.body.classList.toggle(darkTheme)
+    themeButton.classList.toggle(iconTheme)
+    // We save the theme and the current icon that the user chose
+    localStorage.setItem('selected-theme', getCurrentTheme())
+    localStorage.setItem('selected-icon', getCurrentIcon())
+})
+
+/*==================== SCROLL REVEAL ANIMATION ====================*/
+const sr = ScrollReveal({
+    origin: 'top',
+    distance: '30px',
+    duration: 2000,
+    reset: true
+});
+
+sr.reveal(`.home__data, .home__img,
+            .about__data, .about__img,
+            .services__content, .menu__content,
+            .app__data, .app__img,
+            .contact__data, .contact__button,
+            .footer__content`, {
+    interval: 200
+})
+
+});
+
+
+
+
+  
+</script>
+
+
+
+
+
+
+<script>
+  $(document).ready(function(){	
+	
+	$(function () {
+    //  Accordion Panels
+    $(".sortable-accordion div").show();
+    $('.sortable-accordion div').slideToggle('slow');
+    $(".sortable-accordion h3").click(function () {
+        $(this).next(".inner").slideToggle().siblings(".inner:visible").slideUp();
+        $(this).toggleClass("current");
+        $(this).siblings("h3").removeClass("current");
+    });
+});
+  
+$( ".sortable" ).sortable({   
+	placeholder: "ui-sortable-placeholder"   
+}).find("li").append("<span class='options'></span>");  
+
+$('#submenu a').click(function(){return false;})
+
+$('.options').click(function(){
+	var childpos = $(this).offset();  
+  var  parentpos = $(this).parent().offset();
+  
+  var posLeft = childpos.left - parentpos.left;
+
+	$('#submenu').css({'top':(childpos.top - 10)+"px", 'left': (posLeft+420)+"px"}).fadeIn(200);
+	$('#submenu').mouseleave(function(){$(this).fadeOut(200);});
+});
+
+$('#toggleMenu .list').click(function(){
+	$('#sidebar-menu li span').animate({'opacity':1, 'margin-left':'0px'});
+	$('#sidebar-menu').toggleClass('animate');
+	$('#toggleMenu .list').fadeOut();
+	$('#toggleMenu .thumbs').fadeIn();
+
+});
+
+$('#toggleMenu .thumbs').click(function(){
+	$('#sidebar-menu li span').css({'opacity': 0, 'margin-left': "10px"});
+	$('#sidebar-menu').toggleClass('animate');	
+	$('#toggleMenu .thumbs').fadeOut();
+	$('#toggleMenu .list').fadeIn();	
+	
+});
+
+$("#sidebar-menu li").click(function(){
+	$("#sidebar-menu li").not(this).removeClass("selected");
+	$(this).toggleClass("selected");
+});
+
+$('#drop-select').click(function(){
+	$('#dropdown-list').toggleClass('animate');
+});
+
+$('#dropdown-list li').click(function(){$('#dropdown-list').removeClass('animate');});
+
+});
+
+
+</script>
+
+
+
+
+
+<script src="https://unpkg.com/scrollreveal"></script>
+
+<script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
+
+<script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+
+<script src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
+<script src="main.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+  </body>
+</html>
